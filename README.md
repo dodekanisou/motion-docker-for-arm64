@@ -1,5 +1,7 @@
 # Docker image for motion targeting arm64
 
+[![Build docker image](https://github.com/dodekanisou/motion-docker-for-arm64/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/dodekanisou/motion-docker-for-arm64/actions/workflows/docker-publish.yml)
+
 Docker image with motion installed targeting arm64 devices like RPI 4b. Docker image published in [docker hub](https://hub.docker.com/r/dodekanisou/motion-docker-for-arm64). 
 To configure motion, bint the `/etc/motion` path to a volume and add in the host `the motion.conf` based on the [official motion documentation](https://motion-project.github.io/motion_config.html).
 
