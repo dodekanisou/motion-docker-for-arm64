@@ -7,6 +7,14 @@ To configure motion, bint the `/etc/motion` path to a volume and add in the host
 
 To use local camera (e.g. `/dev/video0` for RPI camera), docker must run as priviledged and you need to bind `"/dev/video0:/dev/video0"`.
 
+## Building locally
+
+You can build locally an image taged as `test/motion:latest` using the following command:
+
+```
+docker buildx build -t test/motion:latest --platform linux/arm64 .
+```
+
 ## Deploy as an IoT Edge module
 
 For IoT Edge deployment use the following settings.
