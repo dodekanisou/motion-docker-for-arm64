@@ -63,3 +63,40 @@ stream_port 8081
 stream_localhost off
 ... more settings needed ...
 ```
+
+## Debugging and diagnostics
+
+Install helpful tools on the Raspberry Pi host
+
+``` bash
+sudo apt-get update
+sudo apt-get install -y psmisc v4l-utils
+# Optional tools
+sudo apt-get install -y lsof rpicam-apps
+```
+Useful tools
+- `fuser` — find processes using camera devices
+- `v4l2-ctl` — inspect and test V4L2 devices
+- `media-ctl` — inspect media-controller topology
+- `rpicam-hello` — detect Raspberry Pi camera modules
+
+### Common commands
+List V4L2 devices:
+``` bash
+v4l2-ctl --list-devices
+ls -l /dev/video*
+```
+- Identify Raspberry Pi cameras: `rpicam-hello --list-cameras`
+- Inspect a device: `v4l2-ctl --all -d /dev/video0`
+- Check which process owns the device: `sudo fuser -v /dev/video0 /dev/video1 /dev/video2`
+- Inspect media topology: `media-ctl -d /dev/media0 -p`
+- Review kernel camera messages: `dmesg | grep -Ei 'camera|ov5647|csi|unicam|imx|sensor'`
+- Test streaming (stop Motion first): `v4l2-ctl -d /dev/video0 --stream-mmap --stream-count=30 --stream-to=/dev/null`
+
+If you are running motion on kubernetes:
+- Scale down Motion before testing devices: `kubectl scale deployment/motion -n motion --replicas=0`
+- Scale up after testing: `kubectl scale deployment/motion -n motion --replicas=1`
+- Check device ownership inside a pod: `kubectl exec -it deploy/motion -n motion -- fuser -v /dev/video0 /dev/video1`
+
+### Common error
+VIDIOC_REQBUFS ... Device or resource busy usually means Motion or another process is already streaming from the device. Stop Motion before running direct tests.
