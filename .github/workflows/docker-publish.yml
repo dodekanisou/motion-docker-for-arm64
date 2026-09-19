@@ -20,15 +20,15 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+    - name: Set date output
+      id: datestep
+      run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v7
       with:
         platforms: linux/arm64
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/motion-docker-for-arm64:${{ steps.date.outputs.date }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/motion-docker-for-arm64:${{ steps.datestep.outputs.date }}
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
