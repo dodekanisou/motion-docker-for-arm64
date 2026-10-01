@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.2
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 ARG MOTION_VERSION=4.7.1
 ARG UBUNTU_RELEASE=noble # Ubuntu 24
